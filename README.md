@@ -93,8 +93,16 @@ Project Root
 
 [edit . 2022-02-07]
 
+### 1. 기존 설정
+
 config 파일에 `ENV.py` 파일 생성 후, `SECRET_KEY` 정의
 
 ```text
 SECRET_KEY = 'DJANGO_SECRET_KEY 정의'
+```
+
+### etc. GitHub Action 설정 (설정중)
+
+```shell
+python manage.py gitaction Action명
 ```
