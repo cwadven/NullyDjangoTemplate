@@ -1,4 +1,5 @@
 import os
+import json
 from django.core.management.base import BaseCommand
 from pathlib import Path
 
@@ -50,35 +51,51 @@ def set_gitaction_settings(path, name, **kwargs):
 
             f.writelines(f"    steps:\n")
 
-            for step in kwargs.get('steps', []):
-                f.writelines(f"    - name: {step.get('name', '')}\n")
-                f.writelines(f"      run: |\n")
-                f.writelines(f"        {step.get('run', '')}\n\n")
+            if kwargs.get('steps'):
+                for step in kwargs.get('steps'):
+                    f.writelines(f"    - name: {step.get('name', '')}\n")
+                    f.writelines(f"      run: |\n")
+                    f.writelines(f"        {step.get('run', '')}\n\n")
 
 
 class Command(BaseCommand):
     help = "GitActions 추가하는 명령"
 
     def add_arguments(self, parser):
+        # 위치 인자
+        parser.add_argument("github_action_file_name", type=str, help="GitHubAction 이름 설정")
 
         # 키워드 인자 (named arguments)
-        parser.add_argument("github_action_file_name", type=str, help="GitHubAction 이름 설정")
+        parser.add_argument('-n', '--name', type=str, help='yml 안의 이름', )
+        parser.add_argument('-b', '--branch', type=str, help='어느 branch 에 적용할 지', )
+        parser.add_argument('-s', '--status', type=str, help='어느 상태에 할지 (ex.push)', )
+        parser.add_argument('-p', '--steps', type=str, help='어느 과정을 걸친 것인지, (ex. "[{"name": "aaa", "run": "bbb"}, {"name": "bbb", "run": "ccc"}]")', )
 
     def handle(self, *args, **kwargs):
         """
-        실행할 동작을 정의해줌
+        실행할 동작을 정의해 줌
         """
-        github_action_file_name = kwargs.get("github_action_file_name", "default")  # 최근 며칠간 쪽지를 삭제할것인지
+        github_action_file_name = kwargs.get("github_action_file_name", "default")
+        branch = kwargs.get("branch") if kwargs.get("branch") else "master"
+        status = kwargs.get("status") if kwargs.get("status") else "push"
+        name = kwargs.get("name") if kwargs.get("name") else "CI/CD"
+        steps = kwargs.get("steps") if kwargs.get("steps") else ""
 
-        create_folder_from_project_root(".github/workflows")
-        create_file_from_project_root(f".github/workflows/{github_action_file_name}.yml")
-        set_gitaction_settings(
-            f".github/workflows/{github_action_file_name}.yml",
-            "CI/CD",
-            branch="master",
-            status="push",
-            steps=[
-                {"name": "Pull Request", "run": "cd /var/www/roadmap/ && sudo git pull origin master"}
-            ]
-        )
-        print('GitActions Code Setted')
+        try:
+            steps = json.loads(steps)
+            create_folder_from_project_root(".github/workflows")
+            create_file_from_project_root(f".github/workflows/{github_action_file_name}.yml")
+            set_gitaction_settings(
+                f".github/workflows/{github_action_file_name}.yml",
+                name,
+                branch=branch,
+                status=status,
+                steps=steps
+            )
+            self.stdout.write(self.style.SUCCESS("GitActions Code Set"))
+        except ValueError as e:
+            self.stdout.write(self.style.ERROR("""
+            steps 설정이 잘못되었습니다. (ex. "[{"name": "aaa", "run": "bbb"}, {"name": "bbb", "run": "ccc"}]")
+            """))
+
+
