@@ -101,8 +101,37 @@ config 파일에 `ENV.py` 파일 생성 후, `SECRET_KEY` 정의
 SECRET_KEY = 'DJANGO_SECRET_KEY 정의'
 ```
 
+### 2. temp_static 폴더 생성
+
+- collectstatic 위한 정보
+
 ### etc. GitHub Action 설정 (설정중)
 
 ```shell
-python manage.py gitaction Action명
+python manage.py gitaction Action파일명 (option -n "파일명" -b "브랜치명" -s "push" -p "step명")
+
+# 예제 
+python manage.py gitaction blank -n 'CI/CD' -b 'master' -s 'push' -p '[{"name": "aaa", "run": "ccc"}, {"name": "bbb", "run": "ccc"}]'
+```
+
+**결과**
+```yaml
+name: CI/CD
+
+on:
+  push:
+    branch: [ master ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: aaa
+      run: |
+        ccc
+
+    - name: bbb
+      run: |
+        ccc
 ```
