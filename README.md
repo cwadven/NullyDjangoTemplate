@@ -93,7 +93,7 @@ Project Root
 
 [edit . 2022-02-07]
 
-### 1. 기존 설정
+### 1. 기본 설정
 
 config 파일에 `ENV.py` 파일 생성 후, `SECRET_KEY` 정의
 
