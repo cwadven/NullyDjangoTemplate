@@ -5,6 +5,14 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 
+def create_file_from_project_root(path):
+    if is_creatable_file(path):
+        f = open(os.path.join(BASE_DIR, *path.split("/")), "w+")
+        f.close()
+    else:
+        print("파일을 생성할 위치의 상위 폴더가 존재하지 않습니다.")
+
+
 def create_folder_from_project_root(path):
     os.makedirs(os.path.join(BASE_DIR, *path.split("/")), exist_ok=True)
 
@@ -14,14 +22,6 @@ def is_creatable_file(path):
     is_parent_folder_exist = has_parent_folder and os.path.exists(os.path.join(BASE_DIR, *path.split("/")[:-1]))
 
     return (not has_parent_folder) or is_parent_folder_exist
-
-
-def create_file_from_project_root(path):
-    if is_creatable_file(path):
-        f = open(os.path.join(BASE_DIR, *path.split("/")), "w+")
-        f.close()
-    else:
-        print("파일을 생성할 위치의 상위 폴더가 존재하지 않습니다.")
 
 
 def set_gitaction_settings(path, name, **kwargs):
@@ -59,22 +59,21 @@ def set_gitaction_settings(path, name, **kwargs):
 class Command(BaseCommand):
     help = "GitActions 추가하는 명령"
 
-    @staticmethod
-    def create_file_from_project_root(path):
-        if is_creatable_file(path):
-            f = open(os.path.join(BASE_DIR, *path.split("/")), "w+")
-            f.close()
-        else:
-            print("파일을 생성할 위치의 상위 폴더가 존재하지 않습니다.")
+    def add_arguments(self, parser):
+
+        # 키워드 인자 (named arguments)
+        parser.add_argument("github_action_file_name", type=str, help="GitHubAction 이름 설정")
 
     def handle(self, *args, **kwargs):
         """
         실행할 동작을 정의해줌
         """
+        github_action_file_name = kwargs.get("github_action_file_name", "default")  # 최근 며칠간 쪽지를 삭제할것인지
+
         create_folder_from_project_root(".github/workflows")
-        create_file_from_project_root(".github/workflows/blank.yml")
+        create_file_from_project_root(f".github/workflows/{github_action_file_name}.yml")
         set_gitaction_settings(
-            ".github/workflows/blank.yml",
+            f".github/workflows/{github_action_file_name}.yml",
             "CI/CD",
             branch="master",
             status="push",
