@@ -26,7 +26,11 @@ THIRD_APPS = []
 # Django startapp
 PROJECT_APPS = []
 
-INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_APPS
+PROJECT_SETTING_APPS = [
+    'pre_setting',
+]
+
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_APPS + PROJECT_SETTING_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
