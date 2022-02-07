@@ -82,4 +82,4 @@ class Command(BaseCommand):
                 {"name": "Pull Request", "run": "cd /var/www/roadmap/ && sudo git pull origin master"}
             ]
         )
-        print('my_command.py is running!')
+        print('GitActions Code Setted')
