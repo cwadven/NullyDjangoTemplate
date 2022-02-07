@@ -103,9 +103,25 @@ SECRET_KEY = 'DJANGO_SECRET_KEY 정의'
 
 ### 2. temp_static 폴더 생성
 
-- collectstatic 위한 정보
+- collectstatic 위한 의존성 폴더 생성
 
-### etc. GitHub Action 설정 (설정중)
+### 3. 서버 초기 설정
+
+```shell
+python manage.py migrate
+```
+
+```shell
+python manage.py collectstatic --no-input
+```
+
+### 4. 서버 실행
+
+```shell
+python manage.py runserver
+```
+
+### ETC. GitHub Action 설정 (설정중)
 
 ```shell
 python manage.py gitaction Action파일명 (option -n "파일명" -b "브랜치명" -s "push" -p "step명")
