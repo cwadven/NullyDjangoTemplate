@@ -88,3 +88,13 @@ Project Root
 ├── 🗑 requirements.txt                                  # requirements.txt
 └── 📋 README.md                                        # Readme
 ```
+
+## Usage
+
+[edit . 2022-02-07]
+
+config 파일에 `ENV.py` 파일 생성 후, `SECRET_KEY` 정의
+
+```text
+SECRET_KEY = 'DJANGO_SECRET_KEY 정의'
+```
