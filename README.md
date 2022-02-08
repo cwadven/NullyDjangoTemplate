@@ -121,7 +121,9 @@ python manage.py collectstatic --no-input
 python manage.py runserver
 ```
 
-### ETC. GitHub Action 설정 (설정중)
+### ETC. 
+
+#### 1. GitHub Action 설정
 
 ```shell
 python manage.py gitaction Action파일명 (option -n "파일명" -b "브랜치명" -s "push" -p "step명")
@@ -151,3 +153,15 @@ jobs:
       run: |
         ccc
 ```
+
+#### 2. 랜덤 데이터 추가
+
+- postgresql 다운로드 필요 (psycopg2 때문... mac 경우 - psycopg2-binary)
+
+```shell
+python manage.py createrandom 앱명 테이블명 (option -n "생성숫자")
+
+# 예제
+python manage.py createrandom crud Product -n 7
+```
+
