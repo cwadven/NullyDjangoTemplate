@@ -20,19 +20,24 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-# pip 설치하는 APP
-THIRD_APPS = []
+# pip 설치 APP
+THIRD_APPS = [
+    "debug_toolbar",
+]
 
 # Django startapp
-PROJECT_APPS = []
+PROJECT_APPS = [
+    'account',
+]
 
 PROJECT_SETTING_APPS = [
     'pre_setting',
+    'crud',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_APPS + PROJECT_SETTING_APPS
 
-MIDDLEWARE = [
+DJANGO_MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -40,6 +45,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+THIRD_MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+
+MIDDLEWARE = DJANGO_MIDDLEWARE + THIRD_MIDDLEWARE
+
+INTERNAL_IPS = [
+    "127.0.0.1",
 ]
 
 ROOT_URLCONF = 'config.urls'
