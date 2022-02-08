@@ -41,3 +41,5 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("Random Table Data Set Created"))
         except LookupError as e:
             self.stdout.write(self.style.ERROR(e))
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(e))
