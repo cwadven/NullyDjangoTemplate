@@ -1,10 +1,7 @@
-import importlib
 import random
 
 from django.core.management.base import BaseCommand
 from django.apps import apps
-from django.db.models.fields import BigAutoField
-
 from django_seed import Seed
 
 
