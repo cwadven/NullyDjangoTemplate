@@ -38,7 +38,7 @@ class Command(BaseCommand):
             seeder.add_entity(model, int(number), foreign_key_seeder_setting)
             seeder.execute()
 
-            self.stdout.write(self.style.SUCCESS("Random Table Data Set Created"))
+            self.stdout.write(self.style.SUCCESS(f"{app_name} in {model_name} Table Random Data {number} Created"))
         except LookupError as e:
             self.stdout.write(self.style.ERROR(e))
         except Exception as e:
