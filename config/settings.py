@@ -23,6 +23,7 @@ DJANGO_APPS = [
 # pip 설치 APP
 THIRD_APPS = [
     "debug_toolbar",
+    "django_seed",
 ]
 
 # Django startapp
