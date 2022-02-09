@@ -29,12 +29,10 @@ THIRD_APPS = [
 
 # Django startapp
 PROJECT_APPS = [
-    'account',
 ]
 
 PROJECT_SETTING_APPS = [
     'pre_setting',
-    'crud',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_APPS + PROJECT_SETTING_APPS
