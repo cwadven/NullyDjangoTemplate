@@ -47,16 +47,13 @@ Project Root
 │    ├── 📜 urls.py
 │    └── 📜 wsgi.py
 │
-├── 📂 App Name
+├── 📂 pre_setting
 │    ├── 📂 migrations                                                      
-│    ├── 📜 admin.py                                
-│    ├── 📜 app.py
-│    ├── 📜 forms.py
-│    ├── 📜 tests.py
-│    ├── 📜 urls.py
-│    ├── 📜 views.py
-│    └── 📜 modles.py                                     
-│
+│    └── 📂 management
+│         └── 📂 commands  
+│              ├── 📜 createrandom.py  # 랜덤한 데이터 생성용 Command
+│              └── 📜 gitaction.py     # GitAction 설정용 Command
+│                                    
 ├── 📂 App Name
 │    ├── 📂 migrations                                     
 │    ├── 📜 admin.py                                  
