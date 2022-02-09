@@ -24,6 +24,7 @@ DJANGO_APPS = [
 THIRD_APPS = [
     "debug_toolbar",
     "django_seed",
+    "rest_framework",
 ]
 
 # Django startapp
