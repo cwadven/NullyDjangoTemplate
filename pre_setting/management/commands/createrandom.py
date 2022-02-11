@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 
 from django.core.management.base import BaseCommand
 from django.apps import apps
@@ -32,14 +33,15 @@ class Command(BaseCommand):
 
             foreign_key_seeder_setting = dict()
 
-            for field in model_fields:
-                if field.related_model:
-                    _name = field.name
-                    _model = field.related_model
-                    _lambda = lambda x: random.choice(_model.objects.all())
-                    foreign_key_seeder_setting[_name] = _lambda(1)
-
-            seeder.add_entity(model, int(number), foreign_key_seeder_setting)
+            # Reference 때문에 이렇게 하나씩 반복 ...
+            for _ in range(int(number)):
+                for field in model_fields:
+                    if field.related_model:
+                        _name = field.name
+                        _model = field.related_model
+                        foreign_key_seeder_setting[_name] = random.choice(_model.objects.all())
+                deep_copy = deepcopy(foreign_key_seeder_setting)
+                seeder.add_entity(model, 1, deep_copy)
             seeder.execute()
 
             self.stdout.write(self.style.SUCCESS(f"{app_name} in {model_name} Table Random Data {number} Created"))
