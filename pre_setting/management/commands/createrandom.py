@@ -30,7 +30,14 @@ class Command(BaseCommand):
             model = apps.get_model(app_name, model_name)
             model_fields = model._meta.fields
 
-            foreign_key_seeder_setting = {f"{field.name}": lambda x: random.choice(field.related_model.objects.all()) for field in model_fields if field.related_model}
+            foreign_key_seeder_setting = dict()
+
+            for field in model_fields:
+                if field.related_model:
+                    _name = field.name
+                    _model = field.related_model
+                    _lambda = lambda x: random.choice(_model.objects.all())
+                    foreign_key_seeder_setting[_name] = _lambda(1)
 
             seeder.add_entity(model, int(number), foreign_key_seeder_setting)
             seeder.execute()
