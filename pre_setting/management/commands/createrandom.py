@@ -1,6 +1,7 @@
 import random
 from copy import deepcopy
 
+from django.contrib.admin.utils import flatten
 from django.core.management.base import BaseCommand
 from django.apps import apps
 from django_seed import Seed
@@ -40,9 +41,31 @@ class Command(BaseCommand):
                         _name = field.name
                         _model = field.related_model
                         foreign_key_seeder_setting[_name] = random.choice(_model.objects.all())
+
                 deep_copy = deepcopy(foreign_key_seeder_setting)
                 seeder.add_entity(model, 1, deep_copy)
-            seeder.execute()
+
+            created = seeder.execute()
+
+            # For many_to_many_fields create
+            cleaned = flatten(list(created.values()))
+
+            model_many_to_many_fields = model._meta.many_to_many
+
+            for pk in cleaned:
+                get_model = model.objects.get(pk=pk)
+
+                for model_many_to_many_field in model_many_to_many_fields:
+                    __name = model_many_to_many_field.name
+                    __model = model_many_to_many_field.related_model
+
+                    many_to_many_model = getattr(get_model, __name)
+
+                    min = 0
+                    max = __model.objects.count()
+                    randint = random.randint(min, max)
+
+                    many_to_many_model.add(*random.sample(list(__model.objects.values_list('id', flat=True)), randint))
 
             self.stdout.write(self.style.SUCCESS(f"{app_name} in {model_name} Table Random Data {number} Created"))
         except LookupError as e:
