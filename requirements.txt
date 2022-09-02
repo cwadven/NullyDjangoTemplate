@@ -1,5 +1,5 @@
 asgiref==3.5.0
-Django==3.2.12
+Django==3.2.15
 django-debug-toolbar==3.2.4
 django-seed==0.3.1
 Faker==12.1.0
