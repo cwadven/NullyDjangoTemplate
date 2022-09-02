@@ -23,6 +23,8 @@ DJANGO_APPS = [
 THIRD_APPS = [
     'debug_toolbar',
     'django_seed',
+    'django_celery_results',
+    'cacheops',
 ]
 
 PROJECT_APPS = []
