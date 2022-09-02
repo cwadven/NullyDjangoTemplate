@@ -12,16 +12,10 @@ from django.http import HttpRequest
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from rest_framework.exceptions import APIException
-from rest_framework_jwt.settings import api_settings
 from typing import Optional
 
 from account.models import User
 from config.common.exception_codes import PageSizeMaximumException, MissingMandatoryParameterException
-
-jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
 
 def mandatory_key(request, name):
@@ -64,25 +58,6 @@ def optional_key(request, name, default_value=''):
     return data
 
 
-def paging(request: HttpRequest, default_size: int = 10) -> tuple:
-    try:
-        page = int(request.GET.get('page', 1)) - 1
-        size = int(request.GET.get('size', default_size))
-        if size > 30:
-            raise PageSizeMaximumException()
-        start_row = page * size
-        end_row = (page + 1) * size
-    except APIException as e:
-        raise APIException(e)
-    return start_row, end_row
-
-
-def get_login_token(user: User) -> str:
-    payload = jwt_payload_handler(user)
-    token = jwt_encode_handler(payload)
-    return token
-
-
 def get_max_int_from_queryset(qs: QuerySet, field_name: str) -> Optional[int]:
     return qs.aggregate(_max=Max(field_name)).get('_max')
 
@@ -113,7 +88,7 @@ def generate_presigned_url(file_name: str, expires_in: int = 1000) -> str:
         )
         return url
     except ClientError as e:
-        raise APIException(e)
+        raise Exception(e)
 
 
 def send_email(title: str, html_body_content: str, payload: dict, to: list) -> None:
