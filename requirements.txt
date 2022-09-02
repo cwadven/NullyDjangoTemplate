@@ -12,3 +12,4 @@ sqlparse==0.4.2
 toposort==1.7
 typing-extensions==4.0.1
 zipp==3.7.0
+django-redis==5.2.0
