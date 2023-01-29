@@ -31,8 +31,10 @@ jobs:
       run: |
         . /var/www/프로젝트폴더위치/venv/bin/activate && python /var/www/프로젝트폴더위치/manage.py migrate --noinput
     - name: TestCase
+      env:
+        DJANGO_SETTINGS_MODULE: config.settings.development
       run: |
-        . /var/www/프로젝트폴더위치/venv/bin/activate && python /var/www/프로젝트폴더위치/manage.py test --noinput
+        cd /var/www/프로젝트폴더위치 && . /var/www/프로젝트폴더위치/venv/bin/activate && python /var/www/프로젝트폴더위치/manage.py test --noinput
     - name: cronjob restart
       run: |
         cat /var/www/프로젝트폴더위치/command.cron | sudo crontab -
