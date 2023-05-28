@@ -1,5 +1,5 @@
 import re
-from account.models import User
+from custom_account.models import User
 
 
 def is_username_exists(username):

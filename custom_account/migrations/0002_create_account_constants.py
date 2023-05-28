@@ -2,9 +2,9 @@ from django.db import migrations
 
 
 def forward(apps, schema_editor):
-    UserProvider = apps.get_model('account', 'UserProvider')
-    UserStatus = apps.get_model('account', 'UserStatus')
-    UserType = apps.get_model('account', 'UserType')
+    UserProvider = apps.get_model('custom_account', 'UserProvider')
+    UserStatus = apps.get_model('custom_account', 'UserStatus')
+    UserType = apps.get_model('custom_account', 'UserType')
 
     # 회원가입 유형
     UserProvider.objects.create(
@@ -69,9 +69,9 @@ def forward(apps, schema_editor):
 
 
 def backward(apps, schema_editor):
-    UserProvider = apps.get_model('account', 'UserProvider')
-    UserStatus = apps.get_model('account', 'UserStatus')
-    UserType = apps.get_model('account', 'UserType')
+    UserProvider = apps.get_model('custom_account', 'UserProvider')
+    UserStatus = apps.get_model('custom_account', 'UserStatus')
+    UserType = apps.get_model('custom_account', 'UserType')
 
     # 회원가입 유형
     UserProvider.objects.filter(
@@ -92,7 +92,7 @@ def backward(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0001_initial'),
+        ('custom_account', '0001_initial'),
     ]
 
     operations = [

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from account.views import (
+from custom_account.views import (
     SocialLoginView,
     LoginView,
     SignUpValidationView,
@@ -8,7 +8,7 @@ from account.views import (
     SignUpEmailTokenValidationEndView,
 )
 
-app_name = 'account'
+app_name = 'custom_account'
 
 
 urlpatterns = [

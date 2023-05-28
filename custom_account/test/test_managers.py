@@ -2,15 +2,15 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from account.consts import UserTypeEnum, UserStatusEnum
-from account.models import User
+from custom_account.consts import UserTypeEnum, UserStatusEnum
+from custom_account.models import User
 
 
 class TestCustomUserManager(TestCase):
     def setUp(self):
         pass
 
-    @patch('account.managers.SocialLoginController.validate')
+    @patch('custom_account.managers.SocialLoginController.validate')
     @patch('common_library.generate_random_string_digits')
     def test_get_or_create_user_by_token_when_create_user_email_and_nickname_not_exists(self, mock_random_string, mock_validate):
         # Given:
@@ -37,7 +37,7 @@ class TestCustomUserManager(TestCase):
         self.assertEqual(user.email, '')
         self.assertEqual(user.nickname, 'Random12345')
 
-    @patch('account.managers.SocialLoginController.validate')
+    @patch('custom_account.managers.SocialLoginController.validate')
     def test_get_or_create_user_by_token_when_create_user_email_and_nickname_exists(self, mock_validate):
         # Given:
         token = 'test_token'
@@ -61,7 +61,7 @@ class TestCustomUserManager(TestCase):
         self.assertEqual(user.email, 'test_email')
         self.assertEqual(user.nickname, 'test_nickname')
 
-    @patch('account.managers.SocialLoginController.validate')
+    @patch('custom_account.managers.SocialLoginController.validate')
     def test_get_or_create_user_by_token_when_already_user_exists(self, mock_validate):
         # Given:
         token = 'test_token'

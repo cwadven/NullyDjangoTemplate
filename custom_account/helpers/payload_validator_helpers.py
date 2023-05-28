@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 
-from account.consts import (
+from custom_account.consts import (
     UserCreationExceptionMessage,
     USERNAME_MIN_LENGTH,
     USERNAME_MAX_LENGTH,
@@ -9,7 +9,7 @@ from account.consts import (
     PASSWORD_MIN_LENGTH,
     PASSWORD_MAX_LENGTH,
 )
-from account.services import (
+from custom_account.services import (
     is_username_exists,
     is_email_exists,
     is_nickname_exists,

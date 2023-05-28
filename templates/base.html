@@ -64,7 +64,7 @@
 
             const request = $.ajax({
                 method: 'POST',
-                url: "{% url 'account:login' %}",
+                url: "{% url 'custom_account:login' %}",
                 async: false,
                 data: $('.login-form').serialize()
             });
@@ -208,14 +208,14 @@
                         </div>
                     </div>
                 </div>
-                <a href="{% url 'account:logout' %}" style="word-break: keep-all;"
+                <a href="{% url 'custom_account:logout' %}" style="word-break: keep-all;"
                    class="btn btn-sm btn-light">로그아웃</a>
             {% else %}
                 <button type="button" style="word-break: keep-all;" class="btn btn-sm btn-light me-1 mt-0"
                         data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     로그인
                 </button>
-                <a href="{% url 'account:signup' %}" style="word-break: keep-all;"
+                <a href="{% url 'custom_account:signup' %}" style="word-break: keep-all;"
                    class="btn btn-sm btn-light">회원가입</a>
             {% endif %}
         </div>
@@ -237,7 +237,7 @@
         <div class="col-sm-12 col-md-7 col-lg-8 col-xl-8 col-xxl-9">{% block middle_left %}{% endblock %}</div>
         <div class="col-sm-12 col-md-5 col-lg-4 col-xl-4 col-xxl-3">
             {% block middle_right %}{% endblock %}
-            {% if request.path != '/account/signup' %}
+            {% if request.path != '/custom_account/signup' %}
                 <div class="my-3 p-3 rounded border">
                     <div>
                         <span class="fw-bolder">Yesterday:</span> {{ visitor_info.yesterday|intcomma }}

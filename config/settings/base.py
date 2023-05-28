@@ -30,7 +30,7 @@ THIRD_APPS = [
 ]
 
 PROJECT_APPS = [
-    'account',
+    'custom_account',
 ]
 
 PROJECT_SETTING_APPS = [
@@ -62,7 +62,7 @@ INTERNAL_IPS = [
 
 ROOT_URLCONF = 'config.urls'
 
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'custom_account.User'
 
 TEMPLATES = [
     {

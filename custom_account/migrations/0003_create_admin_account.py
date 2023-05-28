@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 def forward(apps, schema_editor):
-    User = apps.get_model('account', 'User')
+    User = apps.get_model('custom_account', 'User')
     user = User.objects.create_superuser(
         username='admin',
         email='admin@admin.com',
@@ -20,7 +20,7 @@ def forward(apps, schema_editor):
 
 
 def backward(apps, schema_editor):
-    User = apps.get_model('account', 'User')
+    User = apps.get_model('custom_account', 'User')
     User.objects.filter(
         username='admin',
     ).delete()
@@ -29,7 +29,7 @@ def backward(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0002_create_account_constants'),
+        ('custom_account', '0002_create_account_constants'),
     ]
 
     operations = [

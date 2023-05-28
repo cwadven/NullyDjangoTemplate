@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from account.models import (
+from custom_account.models import (
     User,
     UserProvider,
     UserStatus,

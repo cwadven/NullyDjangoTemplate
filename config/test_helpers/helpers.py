@@ -1,7 +1,7 @@
 from django.contrib.auth import user_logged_in
 from django.test import Client
 
-from account.models import User
+from custom_account.models import User
 
 
 class LoginMixin(object):

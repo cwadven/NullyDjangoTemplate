@@ -4,11 +4,11 @@ from unittest.mock import patch, Mock
 from django.urls import reverse
 from django.test import TestCase, Client
 
-from account.consts import SocialTypeSelector, UserCreationExceptionMessage, PASSWORD_MIN_LENGTH, \
+from custom_account.consts import SocialTypeSelector, UserCreationExceptionMessage, PASSWORD_MIN_LENGTH, \
     PASSWORD_MAX_LENGTH, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, \
     SIGNUP_MACRO_COUNT
-from account.helpers.social_login_helpers import SocialLoginController
-from account.models import User
+from custom_account.helpers.social_login_helpers import SocialLoginController
+from custom_account.models import User
 
 from config.common.exception_codes import LoginFailedException, UnknownPlatformException
 from config.test_helpers.helpers import LoginMixin
@@ -19,7 +19,7 @@ class SocialLoginTestCase(LoginMixin, TestCase):
         super(SocialLoginTestCase, self).setUp()
         self.c = Client()
 
-    @patch('account.helpers.social_login_helpers.requests.post')
+    @patch('custom_account.helpers.social_login_helpers.requests.post')
     def test_invalidate_kakao_token_social_login_should_fail(self, mock_post):
         # Given: 문제가 있는 토큰을 보냈을 경우 및 status_code 를 400 으로 설정
         res = mock_post.return_value
@@ -47,8 +47,8 @@ class SocialLoginTestCase(LoginMixin, TestCase):
         # Then: 알 수 없는 플랫폼으로 접근 했습니다.
         self.assertRaises(UnknownPlatformException, platform_exception)
 
-    @patch('account.helpers.social_login_helpers.requests.post')
-    @patch('account.helpers.social_login_helpers.requests.get')
+    @patch('custom_account.helpers.social_login_helpers.requests.post')
+    @patch('custom_account.helpers.social_login_helpers.requests.get')
     def test_valid_kakao_social_login_should_success(self, mock_get, mock_post):
         # Given: 토큰을 가져오는 값과 정보를 가져오는 것을 mocking
         res = mock_post.return_value
@@ -79,8 +79,8 @@ class SocialLoginTestCase(LoginMixin, TestCase):
             'name': None,
         })
 
-    @patch('account.helpers.social_login_helpers.requests.post')
-    @patch('account.helpers.social_login_helpers.requests.get')
+    @patch('custom_account.helpers.social_login_helpers.requests.post')
+    @patch('custom_account.helpers.social_login_helpers.requests.get')
     def test_valid_naver_social_login_should_success(self, mock_get, mock_post):
         # Given: 토큰을 가져오는 값과 정보를 가져오는 것을 mocking
         res = mock_post.return_value
@@ -109,8 +109,8 @@ class SocialLoginTestCase(LoginMixin, TestCase):
         self.assertEqual(data.get('email'), None)
         self.assertEqual(data.get('name'), None)
 
-    @patch('account.helpers.social_login_helpers.requests.post')
-    @patch('account.helpers.social_login_helpers.requests.get')
+    @patch('custom_account.helpers.social_login_helpers.requests.post')
+    @patch('custom_account.helpers.social_login_helpers.requests.get')
     def test_valid_google_social_login_should_success(self, mock_get, mock_post):
         # Given: 토큰을 가져오는 값과 정보를 가져오는 것을 mocking
         res = mock_post.return_value
@@ -137,8 +137,8 @@ class SocialLoginTestCase(LoginMixin, TestCase):
         self.assertEqual(data.get('email'), None)
         self.assertEqual(data.get('name'), None)
 
-    @patch('account.helpers.social_login_helpers.requests.post')
-    @patch('account.helpers.social_login_helpers.requests.get')
+    @patch('custom_account.helpers.social_login_helpers.requests.post')
+    @patch('custom_account.helpers.social_login_helpers.requests.get')
     def test_kakao_social_login_with_mandatory_key_when_user_create_scenario(self, mock_get, mock_post):
         # Given: 필수 항목을 보냈을 경우
         # kakao 계정으로 로그인 했을 경우
@@ -159,7 +159,7 @@ class SocialLoginTestCase(LoginMixin, TestCase):
         }
 
         # When: 소셜로그인에 성공했을 경우
-        response = self.c.post(reverse('account:social_login'), body)
+        response = self.c.post(reverse('custom_account:social_login'), body)
 
         # Then: User 가 생성되어야합니다.
         self.assertEqual(response.status_code, 200)
@@ -169,8 +169,8 @@ class SocialLoginTestCase(LoginMixin, TestCase):
         self.assertEqual(user.user_status.id, 1)
         self.assertEqual(user.user_provider.id, provider)
 
-    @patch('account.helpers.social_login_helpers.requests.post')
-    @patch('account.helpers.social_login_helpers.requests.get')
+    @patch('custom_account.helpers.social_login_helpers.requests.post')
+    @patch('custom_account.helpers.social_login_helpers.requests.get')
     def test_naver_social_login_with_mandatory_key_when_user_create_scenario(self, mock_get, mock_post):
         # Given: 필수 항목을 보냈을 경우
         # naver 계정으로 로그인 했을 경우
@@ -196,7 +196,7 @@ class SocialLoginTestCase(LoginMixin, TestCase):
         }
 
         # When: 소셜로그인에 성공했을 경우
-        response = self.c.post(reverse('account:social_login'), body)
+        response = self.c.post(reverse('custom_account:social_login'), body)
 
         # Then: User 가 생성되어야합니다.
         self.assertEqual(response.status_code, 200)
@@ -222,7 +222,7 @@ class LoginTestCase(LoginMixin, TestCase):
     def test_login_user_should_success_when_username_and_password_exists(self):
         # Given:
         # When:
-        response = self.c.post(reverse('account:normal_login'), self.body)
+        response = self.c.post(reverse('custom_account:normal_login'), self.body)
 
         # Then: 로그인 성공
         self.assertEqual(response.status_code, 200)
@@ -232,7 +232,7 @@ class LoginTestCase(LoginMixin, TestCase):
         self.body['password'] = 'wrong_password'
 
         # When:
-        response = self.c.post(reverse('account:normal_login'), self.body)
+        response = self.c.post(reverse('custom_account:normal_login'), self.body)
         content = json.loads(response.content)
 
         # Then: 로그인 실패
@@ -254,7 +254,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
 
     def test_sign_up_validation_success(self):
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: 성공
@@ -265,7 +265,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['email'] = 'something'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: email 문제로 에러 반환
@@ -277,7 +277,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['username'] = 'a'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: username 길이 문제로 에러 반환
@@ -295,7 +295,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['username'] = '한글'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: username 글자 문제로 에러 반환
@@ -310,7 +310,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['nickname'] = 'a'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: nickname 길이 문제로 에러 반환
@@ -328,7 +328,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['nickname'] = '특수문자!@#$%^&*()'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: nickname 글자 문제로 에러 반환
@@ -345,7 +345,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['username'] = 'test'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: username 중복 에러 반환
@@ -359,7 +359,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['nickname'] = 'test_token'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: nickname 중복 에러 반환
@@ -373,7 +373,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['email'] = 'aaaa@naver.com'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: nickname 중복 에러 반환
@@ -385,7 +385,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['password2'] = '12312312'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: password 확인 에러 반환
@@ -397,7 +397,7 @@ class SignUpValidationTestCase(LoginMixin, TestCase):
         self.body['password1'] = 'a'
 
         # When: 회원가입 검증 요청
-        response = self.c.post(reverse('account:sign_up_validation'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_validation'), self.body)
         content = json.loads(response.content)
 
         # Then: password1 길이 문제로 에러 반환
@@ -421,9 +421,9 @@ class SignUpEmailTokenSendTestCase(LoginMixin, TestCase):
             'email': 'aaaa@naver.com',
         }
 
-    @patch('account.views.generate_dict_value_by_key_to_cache', Mock())
-    @patch('account.views.send_one_time_token_email', Mock())
-    @patch('account.views.get_cache_value_by_key')
+    @patch('custom_account.views.generate_dict_value_by_key_to_cache', Mock())
+    @patch('custom_account.views.send_one_time_token_email', Mock())
+    @patch('custom_account.views.get_cache_value_by_key')
     def test_email_token_create_when_token_create_successful(self, mock_get_cache_value_by_key):
         # Given:
         mock_get_cache_value_by_key.return_value = {
@@ -435,22 +435,22 @@ class SignUpEmailTokenSendTestCase(LoginMixin, TestCase):
         }
 
         # When:
-        response = self.c.post(reverse('account:sign_up_check'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_check'), self.body)
         content = json.loads(response.content)
 
         # Then: 성공 했다는 메시지 반환
         self.assertEqual(response.status_code, 200)
         self.assertEqual(content['message'], '인증번호를 이메일로 전송했습니다.')
 
-    @patch('account.views.generate_dict_value_by_key_to_cache', Mock())
-    @patch('account.views.send_one_time_token_email', Mock())
-    @patch('account.views.get_cache_value_by_key')
+    @patch('custom_account.views.generate_dict_value_by_key_to_cache', Mock())
+    @patch('custom_account.views.send_one_time_token_email', Mock())
+    @patch('custom_account.views.get_cache_value_by_key')
     def test_email_token_create_when_token_create_failed(self, mock_get_cache_value_by_key):
         # Given:
         mock_get_cache_value_by_key.return_value = None
 
         # When:
-        response = self.c.post(reverse('account:sign_up_check'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_check'), self.body)
         content = json.loads(response.content)
 
         # Then: 성공 했다는 메시지 반환
@@ -466,13 +466,13 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
             'one_time_token': '1234',
         }
 
-    @patch('account.views.increase_cache_int_value_by_key')
+    @patch('custom_account.views.increase_cache_int_value_by_key')
     def test_email_token_validate_should_return_fail_when_macro_count_is_30_times(self, mock_increase_cache_int_value_by_key):
         # Given: 30 번 메크로를 했을 경우
         mock_increase_cache_int_value_by_key.return_value = 30
 
         # When:
-        response = self.c.post(reverse('account:sign_up_one_time_token'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_one_time_token'), self.body)
         content = json.loads(response.content)
 
         # Then: 메크로 에러
@@ -482,8 +482,8 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
             '{}회 이상 인증번호를 틀리셨습니다. 현 이메일은 {}시간 동안 인증할 수 없습니다.'.format(SIGNUP_MACRO_COUNT, 24)
         )
 
-    @patch('account.views.increase_cache_int_value_by_key')
-    @patch('account.views.get_cache_value_by_key')
+    @patch('custom_account.views.increase_cache_int_value_by_key')
+    @patch('custom_account.views.get_cache_value_by_key')
     def test_email_token_validate_should_return_fail_when_email_key_not_exists(self,
                                                                                   mock_get_cache_value_by_key,
                                                                                   mock_increase_cache_int_value_by_key):
@@ -493,7 +493,7 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
         mock_get_cache_value_by_key.return_value = None
 
         # When:
-        response = self.c.post(reverse('account:sign_up_one_time_token'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_one_time_token'), self.body)
         content = json.loads(response.content)
 
         # Then: 이메일 에러
@@ -503,8 +503,8 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
             '이메일 인증번호를 다시 요청하세요.',
         )
 
-    @patch('account.views.increase_cache_int_value_by_key')
-    @patch('account.views.get_cache_value_by_key')
+    @patch('custom_account.views.increase_cache_int_value_by_key')
+    @patch('custom_account.views.get_cache_value_by_key')
     def test_email_token_validate_should_return_fail_when_one_time_token_not_exists(self,
                                                                                mock_get_cache_value_by_key,
                                                                                mock_increase_cache_int_value_by_key):
@@ -519,7 +519,7 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
         }
 
         # When:
-        response = self.c.post(reverse('account:sign_up_one_time_token'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_one_time_token'), self.body)
         content = json.loads(response.content)
 
         # Then: 인증번호 에러
@@ -529,8 +529,8 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
             '인증번호가 다릅니다.',
         )
 
-    @patch('account.views.increase_cache_int_value_by_key')
-    @patch('account.views.get_cache_value_by_key')
+    @patch('custom_account.views.increase_cache_int_value_by_key')
+    @patch('custom_account.views.get_cache_value_by_key')
     def test_email_token_validate_should_return_fail_when_one_time_token_is_different(self,
                                                                                     mock_get_cache_value_by_key,
                                                                                     mock_increase_cache_int_value_by_key):
@@ -548,7 +548,7 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
         self.body['one_time_token'] = '1234'
 
         # When:
-        response = self.c.post(reverse('account:sign_up_one_time_token'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_one_time_token'), self.body)
         content = json.loads(response.content)
 
         # Then: 인증번호 에러
@@ -558,8 +558,8 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
             '인증번호가 다릅니다.',
         )
 
-    @patch('account.views.increase_cache_int_value_by_key')
-    @patch('account.views.get_cache_value_by_key')
+    @patch('custom_account.views.increase_cache_int_value_by_key')
+    @patch('custom_account.views.get_cache_value_by_key')
     def test_email_token_validate_should_return_fail_when_username_user_already_exists(self,
                                                                                       mock_get_cache_value_by_key,
                                                                                       mock_increase_cache_int_value_by_key):
@@ -576,7 +576,7 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
         User.objects.create_user(username='test')
 
         # When:
-        response = self.c.post(reverse('account:sign_up_one_time_token'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_one_time_token'), self.body)
         content = json.loads(response.content)
 
         # Then: username 에러
@@ -586,8 +586,8 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
             UserCreationExceptionMessage.USERNAME_EXISTS.label,
         )
 
-    @patch('account.views.increase_cache_int_value_by_key')
-    @patch('account.views.get_cache_value_by_key')
+    @patch('custom_account.views.increase_cache_int_value_by_key')
+    @patch('custom_account.views.get_cache_value_by_key')
     def test_email_token_validate_should_return_fail_when_nickname_user_already_exists(self,
                                                                                        mock_get_cache_value_by_key,
                                                                                        mock_increase_cache_int_value_by_key):
@@ -604,7 +604,7 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
         User.objects.create_user(username='test2', nickname='test')
 
         # When:
-        response = self.c.post(reverse('account:sign_up_one_time_token'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_one_time_token'), self.body)
         content = json.loads(response.content)
 
         # Then: 닉네임 중복 에러
@@ -614,8 +614,8 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
             UserCreationExceptionMessage.NICKNAME_EXISTS.label,
         )
 
-    @patch('account.views.increase_cache_int_value_by_key')
-    @patch('account.views.get_cache_value_by_key')
+    @patch('custom_account.views.increase_cache_int_value_by_key')
+    @patch('custom_account.views.get_cache_value_by_key')
     def test_email_token_validate_should_return_fail_when_email_user_already_exists(self,
                                                                                        mock_get_cache_value_by_key,
                                                                                        mock_increase_cache_int_value_by_key):
@@ -632,7 +632,7 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
         User.objects.create_user(username='test2', nickname='test2', email='test@test.com')
 
         # When:
-        response = self.c.post(reverse('account:sign_up_one_time_token'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_one_time_token'), self.body)
         content = json.loads(response.content)
 
         # Then: email 중복 에러
@@ -642,9 +642,9 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
             UserCreationExceptionMessage.EMAIL_EXISTS.label,
         )
 
-    @patch('account.views.delete_cache_value_by_key', Mock())
-    @patch('account.views.increase_cache_int_value_by_key')
-    @patch('account.views.get_cache_value_by_key')
+    @patch('custom_account.views.delete_cache_value_by_key', Mock())
+    @patch('custom_account.views.increase_cache_int_value_by_key')
+    @patch('custom_account.views.get_cache_value_by_key')
     def test_email_token_validate_should_return_success(self,
                                                         mock_get_cache_value_by_key,
                                                         mock_increase_cache_int_value_by_key):
@@ -659,7 +659,7 @@ class SignUpEmailTokenValidationEndViewTestCase(LoginMixin, TestCase):
         }
 
         # When:
-        response = self.c.post(reverse('account:sign_up_one_time_token'), self.body)
+        response = self.c.post(reverse('custom_account:sign_up_one_time_token'), self.body)
         content = json.loads(response.content)
 
         # Then: 성공

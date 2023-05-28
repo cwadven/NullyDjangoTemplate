@@ -1,7 +1,7 @@
-from account.models import User
+from custom_account.models import User
 from django.test import TestCase
 
-from account.services import is_username_exists, is_nickname_exists, is_email_exists, is_length_valid, \
+from custom_account.services import is_username_exists, is_nickname_exists, is_email_exists, is_length_valid, \
     is_only_alphanumeric, is_only_korean_english_alphanumeric
 
 

@@ -3,8 +3,8 @@ from django.contrib.auth import login, authenticate
 from django.http import JsonResponse
 from django.views import View
 
-from account.helpers.payload_validator_helpers import SignUpPayloadValidator
-from account.models import User
+from custom_account.helpers.payload_validator_helpers import SignUpPayloadValidator
+from custom_account.models import User
 
 from common_decorator import mandatories
 from common_library import generate_dict_value_by_key_to_cache, get_cache_value_by_key, generate_random_string_digits, \
