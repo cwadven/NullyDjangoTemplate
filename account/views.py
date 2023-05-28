@@ -26,14 +26,15 @@ class SocialLoginView(View):
         return JsonResponse({})
 
 
-@mandatories('username', 'password')
-def normal_login(request, m):
-    user = authenticate(request, username=m['username'], password=m['password'])
-    if not user:
-        return JsonResponse({'message': '아이디/비밀번호 정보가 일치하지 않습니다.'}, status=400)
+class LoginView(View):
+    @mandatories('username', 'password')
+    def post(self, request, m):
+        user = authenticate(request, username=m['username'], password=m['password'])
+        if not user:
+            return JsonResponse({'message': '아이디/비밀번호 정보가 일치하지 않습니다.'}, status=400)
 
-    login(request, user)
-    return JsonResponse({}, status=200)
+        login(request, user)
+        return JsonResponse({}, status=200)
 
 
 class SignUpValidationView(View):
