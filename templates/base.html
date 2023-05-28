@@ -29,8 +29,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
-    <script type="text/javascript" src="{% static 'notification.js' %}"></script>
-    <script type="text/javascript" src="{% static 'base.js' %}"></script>
     <script>
         {% if user.is_authenticated %}
         $(document).ready(function () {
@@ -209,7 +207,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="{% url 'account:account_logout' %}" style="word-break: keep-all;"
+                <a href="{% url 'custom_account:normal_logout' %}" style="word-break: keep-all;"
                    class="btn btn-sm btn-light">로그아웃</a>
             {% else %}
                 <button type="button" style="word-break: keep-all;" class="btn btn-sm btn-light me-1 mt-0"
@@ -272,8 +270,8 @@
                     <div class="fw-bold mb-2">일반 로그인</div>
                     <form class="login-form" mehtod="POST" action="">
                         {% csrf_token %}
-                        <input class="form-control mb-2" type="text" name="username" placeholder="아이디"/>
-                        <input class="form-control mb-2" type="password" name="password" placeholder="비밀번호"/>
+                        <input class="form-control mb-2" type="text" name="username" placeholder="아이디" required/>
+                        <input class="form-control mb-2" type="password" name="password" placeholder="비밀번호" required/>
                         <div class="d-grid gap-2">
                             <input class="btn text-white" style="background-color: rgb(82, 121, 250);" type="submit"
                                    value="로그인"/>

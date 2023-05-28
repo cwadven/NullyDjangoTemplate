@@ -1,6 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
-from django.contrib.auth import login, authenticate
-from django.http import JsonResponse
+from django.contrib.auth import login, authenticate, logout
+from django.http import JsonResponse, HttpResponseRedirect
 from django.views import View
 
 from custom_account.helpers.payload_validator_helpers import SignUpPayloadValidator
@@ -35,6 +36,12 @@ class LoginView(View):
 
         login(request, user)
         return JsonResponse({}, status=200)
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect('/')
 
 
 class SignUpValidationView(View):
