@@ -45,3 +45,4 @@ wcwidth==0.2.5
 wrapt==1.14.1
 zipp==3.7.0
 flower==1.2.0
+django-allauth==0.54.0
