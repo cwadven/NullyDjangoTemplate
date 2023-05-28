@@ -1,5 +1,6 @@
 {% load static %}
 {% load humanize %}
+{% load socialaccount %}
 
 <!DOCTYPE html>
 <html lang="en" class="h-100">
@@ -64,7 +65,7 @@
 
             const request = $.ajax({
                 method: 'POST',
-                url: "{% url 'custom_account:login' %}",
+                url: "{% url 'custom_account:normal_login' %}",
                 async: false,
                 data: $('.login-form').serialize()
             });
@@ -208,15 +209,13 @@
                         </div>
                     </div>
                 </div>
-                <a href="{% url 'custom_account:logout' %}" style="word-break: keep-all;"
+                <a href="{% url 'account:account_logout' %}" style="word-break: keep-all;"
                    class="btn btn-sm btn-light">로그아웃</a>
             {% else %}
                 <button type="button" style="word-break: keep-all;" class="btn btn-sm btn-light me-1 mt-0"
                         data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     로그인
                 </button>
-                <a href="{% url 'custom_account:signup' %}" style="word-break: keep-all;"
-                   class="btn btn-sm btn-light">회원가입</a>
             {% endif %}
         </div>
     </div>
@@ -287,9 +286,6 @@
                     <div class="d-grid gap-2">
                         <a href="{% provider_login_url 'google' %}" class="btn text-white"
                            style="background-color: rgb(255, 78, 55);background-size:30px auto;background-image:url('{% static 'google_icon.png' %}');background-repeat:no-repeat;background-position:15px center;">Google
-                            로그인</a>
-                        <a href="{% provider_login_url 'github' %}" class="btn text-white"
-                           style="background-color: rgb(138, 138, 138);background-size:30px auto;background-image:url('{% static 'github_icon.png' %}');background-repeat:no-repeat;background-position:15px center;">Github
                             로그인</a>
                         <a href="{% provider_login_url 'kakao' %}" class="btn"
                            style="background-color: rgb(248, 198, 80);background-size:30px auto;background-image:url('{% static 'kakao_icon.png' %}');background-repeat:no-repeat;background-position:15px center;">KaKao

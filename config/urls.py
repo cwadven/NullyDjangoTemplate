@@ -3,10 +3,12 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.conf import settings
 
+from config.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    path('', home, name='home'),
     path('account/', include('allauth.urls')),
     path('custom_account/', include('custom_account.urls')),
 ]

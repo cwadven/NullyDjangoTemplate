@@ -57,7 +57,6 @@ DJANGO_MIDDLEWARE = [
 
 THIRD_MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'config.middlewares.Handle405Middleware',
 ]
 
 MIDDLEWARE = DJANGO_MIDDLEWARE + THIRD_MIDDLEWARE
