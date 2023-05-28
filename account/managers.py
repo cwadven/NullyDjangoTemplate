@@ -1,6 +1,6 @@
 from django.contrib.auth.models import UserManager
 
-from account.constants import SocialTypeSelector, UserTypeEnum, UserStatusEnum
+from account.consts import SocialTypeSelector, UserTypeEnum, UserStatusEnum
 from account.helpers.social_login_helpers import SocialLoginController
 
 

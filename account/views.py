@@ -9,7 +9,7 @@ from account.models import User
 from common_decorator import mandatories
 from common_library import generate_dict_value_by_key_to_cache, get_cache_value_by_key, generate_random_string_digits, \
     delete_cache_value_by_key, increase_cache_int_value_by_key
-from .constants import UserCreationExceptionMessage, UserTypeEnum, UserProviderEnum, SIGNUP_MACRO_VALIDATION_KEY, \
+from .consts import UserCreationExceptionMessage, UserTypeEnum, UserProviderEnum, SIGNUP_MACRO_VALIDATION_KEY, \
     SIGNUP_MACRO_COUNT
 from .services import is_username_exists, is_email_exists, is_nickname_exists
 from .task import send_one_time_token_email

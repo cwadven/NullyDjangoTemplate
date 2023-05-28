@@ -15,7 +15,7 @@ from django.utils.html import strip_tags
 
 from typing import Optional, Any
 
-from account.constants import SIGNUP_MACRO_EXPIRE_SECONDS
+from account.consts import SIGNUP_MACRO_EXPIRE_SECONDS
 from config.common.exception_codes import MissingMandatoryParameterException
 
 

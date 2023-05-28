@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from account.constants import UserTypeEnum, UserStatusEnum
+from account.consts import UserTypeEnum, UserStatusEnum
 from account.models import User
 
 

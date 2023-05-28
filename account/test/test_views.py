@@ -4,7 +4,7 @@ from unittest.mock import patch, Mock
 from django.urls import reverse
 from django.test import TestCase, Client
 
-from account.constants import SocialTypeSelector, UserCreationExceptionMessage, PASSWORD_MIN_LENGTH, \
+from account.consts import SocialTypeSelector, UserCreationExceptionMessage, PASSWORD_MIN_LENGTH, \
     PASSWORD_MAX_LENGTH, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, \
     SIGNUP_MACRO_COUNT
 from account.helpers.social_login_helpers import SocialLoginController
