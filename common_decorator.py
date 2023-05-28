@@ -1,3 +1,6 @@
+from functools import wraps
+from django.http import HttpRequest
+
 from common_library import optional_key, mandatory_key
 
 
@@ -18,12 +21,17 @@ def optionals(*keys):
 
 def mandatories(*keys):
     def decorate(func):
-        def wrapper(View, *args, **kwargs):
-            mandatory = dict()
-            for key in keys:
-                data = mandatory_key(View.request, key)
-                mandatory[key] = data
-            return func(View, m=mandatory, *args, **kwargs)
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # 첫 번째 인자가 HttpRequest 인스턴스인지 확인
+            if isinstance(args[0], HttpRequest):
+                request = args[0]
+            else:  # 첫 번째 인자가 View 클래스의 인스턴스라고 가정
+                request = args[0].request
+
+            mandatory = {key: mandatory_key(request, key) for key in keys}
+            kwargs.update(m=mandatory)
+            return func(*args, **kwargs)
 
         return wrapper
 
