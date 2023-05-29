@@ -39,6 +39,7 @@ PROJECT_APPS = [
     'custom_account',
     'banner',
     'cart',
+    'order',
     'popup',
 ]
 
