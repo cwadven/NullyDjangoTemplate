@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from product.forms.admin_forms import ProductImageAdminForm
-from product.models import ProductType, ProductItemInfoType, Product, ProductItem, ProductImage, ProductItemInfo
+from product.models import ProductType, InfoType, Product, ProductItem, ProductImage, ProductItemInfo
 
 
 class ProductTypeAdmin(admin.ModelAdmin):
@@ -15,15 +15,14 @@ class ProductTypeAdmin(admin.ModelAdmin):
 admin.site.register(ProductType, ProductTypeAdmin)
 
 
-class ProductItemInfoTypeAdmin(admin.ModelAdmin):
+class InfoTypeAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'name',
-        'sequence',
     ]
 
 
-admin.site.register(ProductItemInfoType, ProductItemInfoTypeAdmin)
+admin.site.register(InfoType, InfoTypeAdmin)
 
 
 class ProductImageInline(admin.TabularInline):
