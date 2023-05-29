@@ -1,12 +1,13 @@
-<!-- Modal 생성을 위해 Server 에서 COOKIE (home_popup_modal_숫자) 관리 필요 -->
+<!-- Modal 생성을 위해 Server 에서 COOKIE (modal_name_숫자) 관리 필요 -->
 {% for popup in popups %}
-    <div id="home_popup_modal_{{ popup.id|default:0 }}" class="draggable custom-modal"
+    <div id="{{ modal_name }}{{ popup.id|default:0 }}" class="draggable custom-modal"
          style="width: {{ popup.width|default:"300"|add:"20" }}px; left: {{ popup.left|default:"50" }}px; top: {{ popup.top|default:"100"|add:"100" }}px; position: absolute;">
         <div class="modal-content">
             <div class="header-modal"
                  style="cursor: move; display: flex; justify-content: space-between; margin: 10px;">
                 <div class="title-modal" id="staticBackdropLabel">{{ popup.title|default:"" }}</div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        onclick="closeModal('{{ modal_name }}{{ popup.id|default:0 }}')"></button>
             </div>
             <div class="body-modal"
                  style="height: {{ popup.height|default:"300" }}px; display: flex;justify-content: center;">
@@ -25,7 +26,7 @@
                     하루 보이지
                     않음</label>
                 <input type="checkbox" id="todayUnSee_popup_modal_{{ popup.id|default:0 }}" class="checkbox"
-                       onclick="setPopupCookie('home_popup_modal_{{ popup.id|default:0 }}', this);">
+                       onclick="setPopupCookie('{{ modal_name }}{{ popup.id|default:0 }}', this);">
             </div>
         </div>
     </div>
@@ -35,7 +36,12 @@
     <script>
         $(function () {
             $('.draggable').draggable({
-                handle: '.header-modal'
+                handle: '.header-modal',
+                touchAction: 'none',
+                containment: 'window',
+                start: function () {
+                    $(this).css('z-index', getHighestZIndex() + 1);
+                }
             });
         });
 
@@ -53,6 +59,22 @@
                 document.cookie = modalIdName + '=true; expires=' + date.toUTCString() + '; path=/';
                 document.querySelector('#' + modalIdName).remove();
             }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.remove();
+        }
+
+        function getHighestZIndex() {
+            let highestZIndex = 0;
+            $('.draggable').each(function () {
+                const zIndex = parseInt($(this).css('z-index'), 10);
+                if (zIndex > highestZIndex) {
+                    highestZIndex = zIndex;
+                }
+            });
+            return highestZIndex;
         }
     </script>
 {% endif %}
