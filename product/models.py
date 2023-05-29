@@ -27,10 +27,9 @@ class Product(SoftDeleteMixin, DateTimeActiveMixin, CreateModifyTimeMixin):
         help_text='숫자가 작을수록 앞에 있음',
         db_index=True,
     )
-    product_type = models.ForeignKey(
+    product_type = models.ManyToManyField(
         ProductType,
         verbose_name='상품 타입',
-        on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
