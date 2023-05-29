@@ -10,10 +10,14 @@
 {% block current_url %}http://localhost{{ request.get_full_path }}{% endblock %}
 {% block img %}http://localhost/static/logo.ico{% endblock %}
 
-{% block script %}
+{% block top_script %}
 {% endblock %}
 
 {% block lesson %}
+{% endblock %}
+
+{% block full %}
+    {% include "components/modals/home_modal.html" %}
 {% endblock %}
 
 {% block top %}
@@ -23,4 +27,7 @@
 {% endblock %}
 
 {% block middle_right %}
+{% endblock %}
+
+{% block bottom_script %}
 {% endblock %}
