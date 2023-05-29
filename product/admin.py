@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from product.forms.admin_forms import ProductImageAdminForm
 from product.models import ProductType, ProductItemInfoType, Product, ProductItem, ProductImage, ProductItemInfo
 
 
@@ -26,7 +27,11 @@ admin.site.register(ProductItemInfoType, ProductItemInfoTypeAdmin)
 
 
 class ProductImageInline(admin.TabularInline):
+    form = ProductImageAdminForm
     model = ProductImage
+    readonly_fields = [
+        'image',
+    ]
     extra = 0
 
 
