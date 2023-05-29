@@ -145,6 +145,7 @@ class ProductItemInfo(CreateModifyTimeMixin):
     class Meta:
         verbose_name = '상품 아이템 디테일'
         verbose_name_plural = '상품 아이템 디테일'
+        unique_together = ('product_item', 'product_item_info_type')
 
     def __str__(self):
         return f'{self.information}'
