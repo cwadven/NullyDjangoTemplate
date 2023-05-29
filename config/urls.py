@@ -13,6 +13,7 @@ urlpatterns = [
     path('account/', include('allauth.urls')),
 
     path('custom_account/', include('custom_account.urls')),
+    path('banner/', include('banner.urls')),
     path('popup/', include('popup.urls')),
 ]
 

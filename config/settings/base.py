@@ -37,6 +37,7 @@ THIRD_APPS = [
 
 PROJECT_APPS = [
     'custom_account',
+    'banner',
     'popup',
 ]
 
