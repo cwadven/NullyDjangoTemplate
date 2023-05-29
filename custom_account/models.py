@@ -13,6 +13,9 @@ class UserProvider(models.Model):
         managed = True
         db_table = 'custom_account_user_provider'
 
+    def __str__(self):
+        return self.name
+
 
 class UserStatus(models.Model):
     name = models.CharField(max_length=45)
@@ -22,6 +25,8 @@ class UserStatus(models.Model):
         managed = True
         db_table = 'custom_account_user_status'
 
+    def __str__(self):
+        return self.name
 
 class UserType(models.Model):
     name = models.CharField(max_length=45)
@@ -30,6 +35,9 @@ class UserType(models.Model):
     class Meta:
         managed = True
         db_table = 'custom_account_user_type'
+
+    def __str__(self):
+        return self.name
 
 
 class User(AbstractUser):
