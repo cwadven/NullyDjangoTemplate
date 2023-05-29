@@ -28,6 +28,7 @@ class UserStatus(models.Model):
     def __str__(self):
         return self.name
 
+
 class UserType(models.Model):
     name = models.CharField(max_length=45)
     description = models.TextField(blank=True, null=True)
