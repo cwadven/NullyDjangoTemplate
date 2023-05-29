@@ -8,7 +8,7 @@ class HomePopupModalAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'description',
-        'on_clicK_link',
+        'on_click_link',
         'start_time',
         'end_time',
         'is_active',

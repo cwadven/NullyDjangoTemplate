@@ -6,7 +6,7 @@ from popup.models import HomePopupModal
 
 class HomePopupModalAdminForm(ImageAdminForm):
     description = forms.CharField(label='관리자 보기 위한 설명', required=False)
-    on_clicK_link = forms.CharField(label='이미지 클릭 시 링크', required=False)
+    on_click_link = forms.CharField(label='이미지 클릭 시 링크', required=False)
     image_file = forms.ImageField(label='image 이미지 업로드', required=False)
     image = forms.CharField(label='image 이미지 주소', required=False)
 
