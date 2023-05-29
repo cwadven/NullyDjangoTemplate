@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from popup.forms.admin_forms import HomePopupModalAdminForm
 from popup.models import HomePopupModal
 
 
@@ -12,6 +13,7 @@ class HomePopupModalAdmin(admin.ModelAdmin):
         'end_time',
         'is_active',
     ]
+    form = HomePopupModalAdminForm
 
 
 admin.site.register(HomePopupModal, HomePopupModalAdmin)

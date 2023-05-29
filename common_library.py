@@ -2,6 +2,7 @@ import string
 import uuid
 import boto3 as boto3
 import random
+import requests
 from botocore.config import Config
 from botocore.exceptions import ClientError
 
@@ -9,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.core.cache import cache
 from django.db.models import QuerySet, Max
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
@@ -207,3 +208,37 @@ def increase_cache_int_value_by_key(key: str) -> int:
             expire_seconds=SIGNUP_MACRO_EXPIRE_SECONDS,
         )
         return 1
+
+
+def generate_presigned_url(file_name, _type='common', unique=0, expires_in=1000):
+    s3_client = boto3.client(
+        's3',
+        region_name='ap-northeast-2',
+        aws_access_key_id=settings.AWS_IAM_ACCESS_KEY,
+        aws_secret_access_key=settings.AWS_IAM_SECRET_ACCESS_KEY,
+        config=Config(signature_version='s3v4')
+    )
+    try:
+        response = s3_client.generate_presigned_post(
+            Bucket=settings.AWS_S3_BUCKET_NAME,
+            Key=f'{_type}/{unique}/{uuid.uuid4()}_{file_name}',
+            Conditions=[
+                ['content-length-range', 0, 10485760]
+            ],
+            ExpiresIn=expires_in
+        )
+        return response
+    except ClientError as e:
+        return JsonResponse({'result': 'fail'})
+
+
+def upload_file_to_presigned_url(presigned_url: str, presigned_data, file):
+    try:
+        response = requests.post(
+            url=presigned_url,
+            data=presigned_data,
+            files={'file': file},
+        )
+        return response.status_code
+    except Exception as e:
+        return 400
