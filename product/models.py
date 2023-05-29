@@ -89,7 +89,7 @@ class ProductItem(SoftDeleteMixin, DateTimeActiveMixin, CreateModifyTimeMixin):
     )
     title = models.CharField(verbose_name='상품명', max_length=120, db_index=True)
     description = models.TextField(verbose_name='상품 설명', null=True, blank=True)
-    additional_payment_price = models.IntegerField(verbose_name='판매가', db_index=True)
+    additional_payment_price = models.IntegerField(verbose_name='추가 판매가', db_index=True)
     bought_count = models.BigIntegerField(verbose_name='구매 수', default=0, db_index=True)
     left_quantity = models.IntegerField(verbose_name='상품 재고', default=0, db_index=True)
     is_sold_out = models.BooleanField(verbose_name='품절 여부', default=False, db_index=True)
