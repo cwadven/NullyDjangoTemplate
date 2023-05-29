@@ -4,14 +4,22 @@ from product.models import ProductType, ProductItemInfoType, Product, ProductIte
 
 
 class ProductTypeAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'id',
+        'name',
+        'sequence',
+    ]
 
 
 admin.site.register(ProductType, ProductTypeAdmin)
 
 
 class ProductItemInfoTypeAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'id',
+        'name',
+        'sequence',
+    ]
 
 
 admin.site.register(ProductItemInfoType, ProductItemInfoTypeAdmin)
@@ -23,6 +31,21 @@ class ProductImageInline(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'title',
+        'description',
+        'real_price',
+        'payment_price',
+        'sequence',
+        'is_active',
+    ]
+    readonly_fields = [
+        'bought_count',
+        'review_count',
+        'review_rate',
+        'is_deleted',
+    ]
     inlines = [
         ProductImageInline,
     ]
@@ -37,6 +60,19 @@ class ProductItemInfoInline(admin.TabularInline):
 
 
 class ProductItemAdmin(admin.ModelAdmin):
+    list_display = [
+        'good_number',
+        'title',
+        'description',
+        'additional_payment_price',
+        'left_quantity',
+        'is_sold_out',
+        'is_active',
+    ]
+    readonly_fields = [
+        'bought_count',
+        'is_deleted',
+    ]
     inlines = [
         ProductItemInfoInline,
     ]
