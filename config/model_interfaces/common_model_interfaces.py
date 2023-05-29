@@ -4,9 +4,9 @@ from config.common_querysets.common_model_querysets import DateTimeActiveMixinQu
 
 
 class DateTimeActiveMixin(models.Model):
-    start_time = models.DateTimeField(blank=True, null=True, db_index=True)
-    end_time = models.DateTimeField(blank=True, null=True, db_index=True)
-    is_active = models.BooleanField(default=False, db_index=True)
+    start_time = models.DateTimeField(verbose_name='시작 시간', blank=True, null=True, db_index=True)
+    end_time = models.DateTimeField(verbose_name='종료 시간', blank=True, null=True, db_index=True)
+    is_active = models.BooleanField(verbose_name='활성화 여부', default=False, db_index=True)
 
     datetime_active_objects = DateTimeActiveMixinQuerySet.as_manager()
 
