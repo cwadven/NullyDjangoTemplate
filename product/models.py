@@ -21,12 +21,6 @@ class ProductType(models.Model):
 
 
 class Product(SoftDeleteMixin, DateTimeActiveMixin, CreateModifyTimeMixin):
-    sequence = models.PositiveIntegerField(
-        verbose_name='순서',
-        default=1,
-        help_text='숫자가 작을수록 앞에 있음',
-        db_index=True,
-    )
     product_type = models.ManyToManyField(
         ProductType,
         verbose_name='상품 타입',
@@ -37,6 +31,12 @@ class Product(SoftDeleteMixin, DateTimeActiveMixin, CreateModifyTimeMixin):
     description = models.TextField(verbose_name='상품 설명', null=True, blank=True)
     real_price = models.IntegerField(verbose_name='정가', db_index=True)
     payment_price = models.IntegerField(verbose_name='판매가', db_index=True)
+    sequence = models.PositiveIntegerField(
+        verbose_name='순서',
+        default=1,
+        help_text='숫자가 작을수록 앞에 있음',
+        db_index=True,
+    )
     bought_count = models.BigIntegerField(verbose_name='구매 수', default=0, db_index=True)
     review_count = models.BigIntegerField(verbose_name='리뷰 수', default=0, db_index=True)
     review_rate = models.FloatField(verbose_name='리뷰 평점', default=0, db_index=True)
@@ -85,8 +85,6 @@ class ProductItem(SoftDeleteMixin, DateTimeActiveMixin, CreateModifyTimeMixin):
         verbose_name='고유 상품 번호',
         max_length=120,
         db_index=True,
-        null=True,
-        blank=True,
         unique=True,
     )
     title = models.CharField(verbose_name='상품명', max_length=120, db_index=True)
