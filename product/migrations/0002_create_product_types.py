@@ -21,7 +21,7 @@ def forward(apps, schema_editor):
     ProductItemInfoType.objects.create(
         id=1,
         name='색상',
-        sequence=2,
+        sequence=1,
     )
     ProductItemInfoType.objects.create(
         id=2,
@@ -36,7 +36,7 @@ def forward(apps, schema_editor):
     ProductItemInfoType.objects.create(
         id=4,
         name='기타',
-        sequence=3,
+        sequence=4,
     )
 
 
