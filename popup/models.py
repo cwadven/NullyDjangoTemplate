@@ -9,6 +9,12 @@ class Popup(DateTimeActiveMixin, CreateModifyTimeMixin):
     on_click_link = models.TextField(verbose_name='이미지 클릭 시 링크', null=True)
     height = models.PositiveIntegerField(verbose_name='모달 높이')
     width = models.PositiveIntegerField(verbose_name='모달 너비')
+    sequence = models.PositiveIntegerField(
+        verbose_name='앞에 있는 순서',
+        default=1,
+        help_text='숫자가 작을수록 앞에 있음',
+        db_index=True,
+    )
 
     class Meta:
         abstract = True

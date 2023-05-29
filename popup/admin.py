@@ -9,6 +9,7 @@ class HomePopupModalAdmin(admin.ModelAdmin):
         'id',
         'description',
         'on_click_link',
+        'sequence',
         'start_time',
         'end_time',
         'is_active',
