@@ -14,7 +14,7 @@ from django.http import HttpRequest, JsonResponse
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from typing import Optional, Any
+from typing import Optional, Any, Sequence
 
 from custom_account.consts import SIGNUP_MACRO_EXPIRE_SECONDS
 from config.common.exception_codes import MissingMandatoryParameterException
@@ -242,3 +242,21 @@ def upload_file_to_presigned_url(presigned_url: str, presigned_data, file):
         return response.status_code
     except Exception as e:
         return 400
+
+
+def get_filtered_by_startswith_text_and_convert_to_standards(startswith_text: str, keys: Sequence,
+                                                             is_integer=False) -> list:
+    """
+    반복을 할 수 있는 타입에서 특정 텍스트로 시작하는 키를 필터링하면서
+    특정 부분의 키의 값을 정수로 변환할 수 있는지 여부에 따라
+
+    [ 예 ]
+    startswith_text 가 'home_popup_modal_' 인 경우
+    ['home_popup_modal_1', 'home_popup_modal_2', 'home_popup_modal_3', 'home_popup_modal_4', 'k_popup_modal_10']
+    ['1', '2', '3', '4']
+    와 같이 바꾸는 것
+    """
+    return [
+        int(key.replace(startswith_text, '')) if is_integer else key.replace(startswith_text, '')
+        for key in keys if key.startswith(startswith_text)
+    ]
