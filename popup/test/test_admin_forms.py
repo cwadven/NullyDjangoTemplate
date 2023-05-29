@@ -1,4 +1,3 @@
-from datetime import datetime
 from io import BytesIO
 from PIL import Image
 from unittest.mock import Mock, patch
