@@ -13,6 +13,9 @@ class HomePopupModalAdmin(admin.ModelAdmin):
         'end_time',
         'is_active',
     ]
+    readonly_fields = [
+        'image',
+    ]
     form = HomePopupModalAdminForm
 
 
