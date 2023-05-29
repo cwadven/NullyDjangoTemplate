@@ -1,6 +1,6 @@
 from django.urls import path
 
-app_name = 'popup'
+app_name = 'product'
 
 
 urlpatterns = [

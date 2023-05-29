@@ -20,3 +20,10 @@ class CreateModifyTimeMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class SoftDeleteMixin(models.Model):
+    is_deleted = models.BooleanField(verbose_name='삭제 여부', default=False, db_index=True)
+
+    class Meta:
+        abstract = True
