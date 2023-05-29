@@ -12,7 +12,7 @@
             <div class="body-modal"
                  style="height: {{ popup.height|default:"300" }}px; display: flex;justify-content: center;">
                 {% if popup.image %}
-                    {% if popup.on_clicK_link %}
+                    {% if popup.on_click_link %}
                         <a href="{{ popup.on_click_link }}" target="_blank">
                             <img src="{{ popup.image }}" height="{{ popup.height }}" width="{{ popup.width }}"/>
                         </a>
