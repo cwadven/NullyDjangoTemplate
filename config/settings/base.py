@@ -40,6 +40,7 @@ PROJECT_APPS = [
     'banner',
     'cart',
     'order',
+    'product',
     'popup',
 ]
 

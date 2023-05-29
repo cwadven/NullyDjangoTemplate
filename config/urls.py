@@ -16,6 +16,7 @@ urlpatterns = [
     path('banner/', include('banner.urls')),
     path('cart/', include('cart.urls')),
     path('order/', include('order.urls')),
+    path('product/', include('product.urls')),
     path('popup/', include('popup.urls')),
 ]
 
