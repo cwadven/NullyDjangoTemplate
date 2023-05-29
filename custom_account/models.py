@@ -44,6 +44,8 @@ class User(AbstractUser):
     class Meta:
         managed = True
         db_table = 'custom_account_user'
+        verbose_name = '일반 사용자'
+        verbose_name_plural = '일반 사용자'
 
     def raise_if_inaccessible(self):
         if self.user_status_id != 1:
