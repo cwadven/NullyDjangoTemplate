@@ -9,8 +9,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', home, name='home'),
+
     path('account/', include('allauth.urls')),
+
     path('custom_account/', include('custom_account.urls')),
+    path('popup/', include('popup.urls')),
 ]
 
 urlpatterns += [
