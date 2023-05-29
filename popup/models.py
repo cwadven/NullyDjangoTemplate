@@ -17,5 +17,9 @@ class Popup(DateTimeActiveMixin, CreateModifyTimeMixin):
 class HomePopupModal(Popup):
     objects = models.Manager()
 
+    class Meta:
+        verbose_name = '홈 팝업 모달'
+        verbose_name_plural = '홈 팝업 모달'
+
     def __str__(self):
         return f'{self.id} - {self.description}'
