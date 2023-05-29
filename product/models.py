@@ -149,4 +149,4 @@ class ProductItemInfo(CreateModifyTimeMixin):
         verbose_name_plural = '상품 아이템 디테일'
 
     def __str__(self):
-        return f'{self.title} - {self.description}'
+        return f'{self.information}'
