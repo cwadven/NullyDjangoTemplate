@@ -41,6 +41,8 @@ class Product(SoftDeleteMixin, DateTimeActiveMixin, CreateModifyTimeMixin):
     review_count = models.BigIntegerField(verbose_name='리뷰 수', default=0, db_index=True)
     review_rate = models.FloatField(verbose_name='리뷰 평점', default=0, db_index=True)
 
+    objects = models.Manager()
+
     class Meta:
         verbose_name = '상품 틀'
         verbose_name_plural = '상품 틀'
@@ -73,6 +75,8 @@ class ProductInfo(CreateModifyTimeMixin):
         help_text='숫자가 작을수록 앞에 있음',
         db_index=True,
     )
+
+    objects = models.Manager()
 
     class Meta:
         verbose_name = '상품 필수 디테일'
@@ -128,6 +132,8 @@ class ProductItem(SoftDeleteMixin, DateTimeActiveMixin, CreateModifyTimeMixin):
     left_quantity = models.IntegerField(verbose_name='상품 재고', default=0, db_index=True)
     is_sold_out = models.BooleanField(verbose_name='품절 여부', default=False, db_index=True)
 
+    objects = models.Manager()
+
     class Meta:
         verbose_name = '상품 아이템'
         verbose_name_plural = '상품 아이템'
@@ -169,6 +175,8 @@ class ProductItemInfo(CreateModifyTimeMixin):
         db_index=True,
     )
     information = models.CharField(verbose_name='정보', max_length=120, db_index=True)
+
+    objects = models.Manager()
 
     class Meta:
         verbose_name = '상품 아이템 디테일'
