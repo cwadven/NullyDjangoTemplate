@@ -459,7 +459,8 @@ class GetProductItemInfoDisplayInformationTestCase(TestCase):
                 information='빨강',
                 additional_min_price=self.product_item_r_s_b.additional_payment_price,
                 additional_max_price=self.product_item_r_m_b.additional_payment_price,
-                is_sold_out=False
+                is_sold_out=False,
+                left_quantity=self.product_item_r_s_b.left_quantity + self.product_item_r_m_b.left_quantity,
             ).to_dict(),
         ]
         self.assertEqual(result, expected_result)
