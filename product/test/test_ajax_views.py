@@ -129,8 +129,28 @@ class GetProductItemInfoInformationWithProductItemIdTestCase(LoginMixin, TestCas
         response_data = json.loads(response.content)
         # And: 2 개 (S, M)
         self.assertEqual(len(response_data['info']), 2)
-        self.assertEqual(response_data['info'][0], {'information': 'S', 'is_sold_out': False, 'additional_min_price': -5000, 'additional_max_price': -5000, 'display': 'S (-5000)'})
-        self.assertEqual(response_data['info'][1], {'information': 'M', 'is_sold_out': False, 'additional_min_price': 5000, 'additional_max_price': 5000, 'display': 'M (+5000)'})
+        self.assertEqual(
+            response_data['info'][0],
+            {
+                'information': 'S',
+                'is_sold_out': False,
+                'left_quantity': self.product_item_r_s_b.left_quantity,
+                'additional_min_price': -5000,
+                'additional_max_price': -5000,
+                'display': 'S (-5000)'
+            }
+        )
+        self.assertEqual(
+            response_data['info'][1],
+            {
+                'information': 'M',
+                'is_sold_out': False,
+                'left_quantity': self.product_item_r_s_b.left_quantity,
+                'additional_min_price': 5000,
+                'additional_max_price': 5000,
+                'display': 'M (+5000)'
+            }
+        )
         self.assertEqual(response_data['product_item_id'], None)
 
     def test_get_product_item_info_information_with_product_item_id_valid_request_and_is_last_selection_true(self):
@@ -158,7 +178,17 @@ class GetProductItemInfoInformationWithProductItemIdTestCase(LoginMixin, TestCas
         response_data = json.loads(response.content)
         # And: 1 개 (물방울)
         self.assertEqual(len(response_data['info']), 1)
-        self.assertEqual(response_data['info'][0], {'information': '물방울', 'is_sold_out': False, 'additional_min_price': 5000, 'additional_max_price': 5000, 'display': '물방울 (+5000)'})
+        self.assertEqual(
+            response_data['info'][0],
+            {
+                'information': '물방울',
+                'is_sold_out': False,
+                'left_quantity': 5,
+                'additional_min_price': 5000,
+                'additional_max_price': 5000,
+                'display': '물방울 (+5000)'
+            }
+        )
         self.assertEqual(response_data['product_item_id'], self.product_item_r_m_b.id)
 
     def test_get_product_item_info_information_with_product_item_id_invalid_content_type(self):
