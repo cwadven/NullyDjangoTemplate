@@ -160,11 +160,12 @@ class TestProductItemInfoDisplayInformationItemDTO(TestCase):
             information=info,
             is_sold_out=is_sold_out,
             additional_min_price=additional_min_price,
-            additional_max_price=additional_max_price
+            additional_max_price=additional_max_price,
+            left_quantity=10,
         )
 
-        # Then:
-        expected_display = '[품절] 빨강 (-500 ~ +1000)'
+        # Then: left_quantity 10 있어도 수량없음
+        expected_display = '[품절] 빨강 (-500 ~ +1000) (수량 없음)'
         self.assertEqual(dto.display, expected_display)
 
     def test_attrs_post_init_when_all_zero_exists_and_is_sold_out_false(self):
@@ -179,7 +180,8 @@ class TestProductItemInfoDisplayInformationItemDTO(TestCase):
             information=info,
             is_sold_out=is_sold_out,
             additional_min_price=additional_min_price,
-            additional_max_price=additional_max_price
+            additional_max_price=additional_max_price,
+            left_quantity=10,
         )
 
         # Then:
@@ -198,7 +200,8 @@ class TestProductItemInfoDisplayInformationItemDTO(TestCase):
             information=info,
             is_sold_out=is_sold_out,
             additional_min_price=additional_min_price,
-            additional_max_price=additional_max_price
+            additional_max_price=additional_max_price,
+            left_quantity=10,
         )
 
         # Then:
@@ -217,7 +220,8 @@ class TestProductItemInfoDisplayInformationItemDTO(TestCase):
             information=info,
             is_sold_out=is_sold_out,
             additional_min_price=additional_min_price,
-            additional_max_price=additional_max_price
+            additional_max_price=additional_max_price,
+            left_quantity=10,
         )
 
         # Then:
