@@ -1,6 +1,7 @@
 from django.test import TestCase
 
-from product.dtos import ProductDetailDTO, ProductItemDTO
+from product.dtos.model_dtos import ProductDetailDTO, ProductItemDTO
+from product.dtos.response_dtos import ProductItemInfoDisplayInformationItemDTO
 from product.models import Product, ProductInfo, InfoType, ProductType, ProductImage, ProductItem
 
 
@@ -140,3 +141,65 @@ class TestProductItemDTO(TestCase):
         self.assertEqual(product_item['additional_payment_price'], self.product_item.additional_payment_price)
         self.assertEqual(product_item['left_quantity'], self.product_item.left_quantity)
         self.assertEqual(product_item['is_sold_out'], self.product_item.is_sold_out)
+
+
+class TestProductItemInfoDisplayInformationItemDTO(TestCase):
+    def setUp(self):
+        pass
+
+    def test_attrs_post_init_and_sold_out_true(self):
+        # Given:
+        info = '빨강'
+        is_sold_out = True
+        additional_min_price = -500
+        additional_max_price = 1000
+
+        # When:
+        dto = ProductItemInfoDisplayInformationItemDTO(
+            information=info,
+            is_sold_out=is_sold_out,
+            additional_min_price=additional_min_price,
+            additional_max_price=additional_max_price
+        )
+
+        # Then:
+        expected_display = '[품절] 빨강 (-500 ~ +1000)'
+        self.assertEqual(dto.display, expected_display)
+
+    def test_attrs_post_init_when_all_zero_exists_and_is_sold_out_false(self):
+        # Given:
+        info = '빨강'
+        is_sold_out = False
+        additional_min_price = 0
+        additional_max_price = 0
+
+        # When:
+        dto = ProductItemInfoDisplayInformationItemDTO(
+            information=info,
+            is_sold_out=is_sold_out,
+            additional_min_price=additional_min_price,
+            additional_max_price=additional_max_price
+        )
+
+        # Then:
+        expected_display = '빨강'
+        self.assertEqual(dto.display, expected_display)
+
+    def test_attrs_post_init_when_one_zero_exists_and_is_sold_out_false(self):
+        # Given:
+        info = '빨강'
+        is_sold_out = False
+        additional_min_price = 0
+        additional_max_price = 1000
+
+        # When:
+        dto = ProductItemInfoDisplayInformationItemDTO(
+            information=info,
+            is_sold_out=is_sold_out,
+            additional_min_price=additional_min_price,
+            additional_max_price=additional_max_price
+        )
+
+        # Then:
+        expected_display = '빨강 (+0 ~ +1000)'
+        self.assertEqual(dto.display, expected_display)
