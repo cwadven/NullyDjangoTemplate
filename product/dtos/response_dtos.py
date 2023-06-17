@@ -10,19 +10,21 @@ class ProductItemInfoDisplayInformationItemDTO(object):
     display = attr.ib(type=str, default='')
 
     def __attrs_post_init__(self):
-        display = ''
-        additional_min_price = f'+{self.additional_min_price}' if self.additional_min_price >= 0 else f'{self.additional_min_price}'
-        additional_max_price = f'+{self.additional_max_price}' if self.additional_max_price >= 0 else f'{self.additional_max_price}'
+        display_parts = []
 
         if self.is_sold_out:
-            display += '[품절] '
-        display += self.information
-        if not (self.additional_min_price == 0 and self.additional_max_price == 0) and self.additional_min_price != self.additional_max_price:
-            display += f' ({additional_min_price} ~ {additional_max_price})'
-        elif not (self.additional_min_price == 0 and self.additional_max_price == 0) and self.additional_min_price == self.additional_max_price:
-            display += f' ({additional_min_price})'
+            display_parts.append('[품절]')
+        display_parts.append(self.information)
 
-        self.display = display
+        if self.additional_min_price != 0 or self.additional_max_price != 0:
+            if self.additional_min_price != self.additional_max_price:
+                additional_price_range = f'{self.additional_min_price:+} ~ {self.additional_max_price:+}'
+                display_parts.append(f'({additional_price_range})')
+            else:
+                additional_price = f'{self.additional_min_price:+}'
+                display_parts.append(f'({additional_price})')
+
+        self.display = ' '.join(display_parts)
 
     def to_dict(self):
         return attr.asdict(self, recurse=True)
