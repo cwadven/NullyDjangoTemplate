@@ -16,7 +16,7 @@ class ProductDetailDTO(object):
     review_rate = attr.ib(type=float)
     product_type_names = attr.ib(type=List[str])
 
-    info_types = attr.ib(type=List[Tuple[int, str]])
+    info_types = attr.ib(type=List[dict])
     product_images = attr.ib(type=List[str])
 
     @classmethod
