@@ -17,8 +17,10 @@ class ProductItemInfoDisplayInformationItemDTO(object):
         if self.is_sold_out:
             display += '[품절] '
         display += self.information
-        if not (self.additional_min_price == 0 and self.additional_max_price == 0):
+        if not (self.additional_min_price == 0 and self.additional_max_price == 0) and self.additional_min_price != self.additional_max_price:
             display += f' ({additional_min_price} ~ {additional_max_price})'
+        elif not (self.additional_min_price == 0 and self.additional_max_price == 0) and self.additional_min_price == self.additional_max_price:
+            display += f' ({additional_min_price})'
 
         self.display = display
 

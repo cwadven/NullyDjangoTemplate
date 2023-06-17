@@ -203,3 +203,22 @@ class TestProductItemInfoDisplayInformationItemDTO(TestCase):
         # Then:
         expected_display = '빨강 (+0 ~ +1000)'
         self.assertEqual(dto.display, expected_display)
+
+    def test_attrs_post_init_when_two_amount_is_same_and_is_sold_out_false(self):
+        # Given:
+        info = '빨강'
+        is_sold_out = False
+        additional_min_price = 1000
+        additional_max_price = 1000
+
+        # When:
+        dto = ProductItemInfoDisplayInformationItemDTO(
+            information=info,
+            is_sold_out=is_sold_out,
+            additional_min_price=additional_min_price,
+            additional_max_price=additional_max_price
+        )
+
+        # Then:
+        expected_display = '빨강 (+1000)'
+        self.assertEqual(dto.display, expected_display)
