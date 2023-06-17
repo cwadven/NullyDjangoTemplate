@@ -87,6 +87,7 @@ def get_product_item_info_display_information(information: List[str], product_id
             'additional_min_price': None,
             'additional_max_price': None,
             'is_sold_out': True,
+            'left_quantity': 0,
         }
     )
 
@@ -113,6 +114,7 @@ def get_product_item_info_display_information(information: List[str], product_id
                 product_item_info.product_item.additional_payment_price,
                 information['additional_max_price']
             )
+        information['left_quantity'] += product_item_info.product_item.left_quantity
 
         information['is_sold_out'] = product_item_info.product_item.is_sold_out and information['is_sold_out']
 
@@ -121,7 +123,8 @@ def get_product_item_info_display_information(information: List[str], product_id
             information=key,
             additional_min_price=value['additional_min_price'],
             additional_max_price=value['additional_max_price'],
-            is_sold_out=value['is_sold_out']
+            is_sold_out=value['is_sold_out'],
+            left_quantity=value['left_quantity'],
         ).to_dict()
         for key, value in information_by_values.items()
     ]
