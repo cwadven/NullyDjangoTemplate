@@ -94,3 +94,21 @@ def apply_additional_prices(information: List[str], product_item_ids: List[int])
         elif additional_price < 0:
             information[index] = f'{info} ({additional_price})'
     return information
+
+
+def apply_information_sold_out(information: List[str], product_id: int, info_type_id: int) -> List[str]:
+    not_sold_out_information = set()
+    product_item_infos = ProductItemInfo.objects.select_related(
+        'product_item',
+    ).filter(
+        product_item__product_id=product_id,
+        info_type_id=info_type_id,
+    )
+    for product_item_info in product_item_infos:
+        if not product_item_info.product_item.is_sold_out:
+            not_sold_out_information.add(product_item_info.information)
+
+    for index, info in enumerate(information):
+        if info not in not_sold_out_information:
+            information[index] = f'[품절] {info}'
+    return information

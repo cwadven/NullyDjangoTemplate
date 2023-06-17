@@ -5,7 +5,8 @@ from django.test import TestCase
 from product.exception_codes import ProductDoesNotExistsException
 from product.models import Product, ProductItem, ProductItemInfo, InfoType, ProductInfo
 from product.services import get_active_product, get_active_product_item_filter, \
-    get_product_item_id_by_product_item_info, get_left_product_item_infos, apply_additional_prices
+    get_product_item_id_by_product_item_info, get_left_product_item_infos, apply_additional_prices, \
+    apply_information_sold_out
 
 
 class TestGetActiveProduct(TestCase):
@@ -342,7 +343,7 @@ class TestGetLeftProductItemInfos(TestCase):
         self.assertEqual(result, (['M', 'S'], [self.product_item_r_m_b.id, self.product_item_r_s_b.id]))
 
 
-class ApplyAdditionalPricesTestCase(TestCase):
+class ApplyInforamtionInfoTestCase(TestCase):
 
     def setUp(self):
         self.info_type_color = InfoType.objects.create(
@@ -442,12 +443,27 @@ class ApplyAdditionalPricesTestCase(TestCase):
         information = ['S', 'M']
         product_item_ids = [self.product_item_r_s_b.id, self.product_item_r_m_b.id]
 
-        # apply_additional_prices 함수를 호출합니다.
+        # When: apply_additional_prices 함수를 호출합니다.
         result = apply_additional_prices(information, product_item_ids)
 
-        # 예상되는 결과와 일치하는지 확인합니다.
+        # Then: 예상되는 결과와 일치하는지 확인합니다.
         expected_result = [
             f'S ({self.product_item_r_s_b.additional_payment_price})',
             f'M (+{self.product_item_r_m_b.additional_payment_price})',
         ]
+        self.assertEqual(result, expected_result)
+
+    def test_apply_information_sold_out(self):
+        # Given:
+        information = ['S', 'M']
+        product_id = self.product.id
+        # And:
+        self.product_item_r_m_b.is_sold_out = True
+        self.product_item_r_m_b.save()
+
+        # When: apply_information_sold_out 함수를 호출합니다.
+        result = apply_information_sold_out(information, product_id, self.info_type_size.id)
+
+        # Then: 예상되는 결과와 일치하는지 확인합니다.
+        expected_result = ['S', '[품절] M']
         self.assertEqual(result, expected_result)
