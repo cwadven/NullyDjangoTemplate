@@ -81,19 +81,39 @@ def get_left_product_item_infos(product_id: int, info_type_id: int, product_item
     )
 
 
-def get_product_item_info_display_information(information: List[str], product_id: int) -> List[dict]:
-    information_by_values = defaultdict(lambda: {'additional_min_price': 0, 'additional_max_price': 0, 'is_sold_out': True})
+def get_product_item_info_display_information(information: List[str], product_id: int, product_item_ids: List[int]) -> List[dict]:
+    information_by_values = defaultdict(
+        lambda: {
+            'additional_min_price': None,
+            'additional_max_price': None,
+            'is_sold_out': True,
+        }
+    )
 
     product_item_infos = ProductItemInfo.objects.select_related(
         'product_item'
     ).filter(
         product_item__product_id=product_id,
-        information__in=information
+        information__in=information,
+        product_item_id__in=product_item_ids,
     )
     for product_item_info in product_item_infos:
         information = information_by_values[product_item_info.information]
-        information['additional_min_price'] = min(product_item_info.product_item.additional_payment_price, information['additional_min_price'])
-        information['additional_max_price'] = max(product_item_info.product_item.additional_payment_price, information['additional_max_price'])
+        if information['additional_min_price'] is None:
+            information['additional_min_price'] = product_item_info.product_item.additional_payment_price
+        else:
+            information['additional_min_price'] = min(
+                product_item_info.product_item.additional_payment_price,
+                information['additional_min_price'],
+            )
+        if information['additional_max_price'] is None:
+            information['additional_max_price'] = product_item_info.product_item.additional_payment_price
+        else:
+            information['additional_max_price'] = max(
+                product_item_info.product_item.additional_payment_price,
+                information['additional_max_price']
+            )
+
         information['is_sold_out'] = product_item_info.product_item.is_sold_out and information['is_sold_out']
 
     return [

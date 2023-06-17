@@ -447,7 +447,11 @@ class GetProductItemInfoDisplayInformationTestCase(TestCase):
         information = ['빨강']
 
         # When:
-        result = get_product_item_info_display_information(information, self.product.id)
+        result = get_product_item_info_display_information(
+            information,
+            self.product.id,
+            [self.product_item_r_s_b.id, self.product_item_r_m_b.id]
+        )
 
         # Then:
         expected_result = [
