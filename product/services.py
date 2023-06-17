@@ -1,6 +1,9 @@
+from collections import defaultdict
+
 from django.db.models import Q, Count, QuerySet
 from typing import List, Tuple
 
+from product.dtos.response_dtos import ProductItemInfoDisplayInformationItemDTO
 from product.exception_codes import ProductDoesNotExistsException
 from product.models import Product, ProductItem, ProductItemInfo
 
@@ -78,37 +81,27 @@ def get_left_product_item_infos(product_id: int, info_type_id: int, product_item
     )
 
 
-def apply_additional_prices(information: List[str], product_item_ids: List[int]) -> List[str]:
-    information_by_additional_price = dict(
-        ProductItemInfo.objects.filter(
-            product_item_id__in=product_item_ids,
-        ).values_list(
-            'information',
-            'product_item__additional_payment_price',
-        )
-    )
-    for index, info in enumerate(information):
-        additional_price = information_by_additional_price.get(info, 0)
-        if additional_price > 0:
-            information[index] = f'{info} (+{additional_price})'
-        elif additional_price < 0:
-            information[index] = f'{info} ({additional_price})'
-    return information
+def get_product_item_info_display_information(information: List[str], product_id: int) -> List[ProductItemInfoDisplayInformationItemDTO]:
+    information_by_values = defaultdict(lambda: {'additional_min_price': 0, 'additional_max_price': 0, 'is_sold_out': True})
 
-
-def apply_information_sold_out(information: List[str], product_id: int, info_type_id: int) -> List[str]:
-    not_sold_out_information = set()
     product_item_infos = ProductItemInfo.objects.select_related(
-        'product_item',
+        'product_item'
     ).filter(
         product_item__product_id=product_id,
-        info_type_id=info_type_id,
+        information__in=information
     )
     for product_item_info in product_item_infos:
-        if not product_item_info.product_item.is_sold_out:
-            not_sold_out_information.add(product_item_info.information)
+        information = information_by_values[product_item_info.information]
+        information['additional_min_price'] = min(product_item_info.product_item.additional_payment_price, information['additional_min_price'])
+        information['additional_max_price'] = max(product_item_info.product_item.additional_payment_price, information['additional_max_price'])
+        information['is_sold_out'] = product_item_info.product_item.is_sold_out and information['is_sold_out']
 
-    for index, info in enumerate(information):
-        if info not in not_sold_out_information:
-            information[index] = f'[품절] {info}'
-    return information
+    return [
+        ProductItemInfoDisplayInformationItemDTO(
+            information=key,
+            additional_min_price=value['additional_min_price'],
+            additional_max_price=value['additional_max_price'],
+            is_sold_out=value['is_sold_out']
+        ).to_dict()
+        for key, value in information_by_values.items()
+    ]
