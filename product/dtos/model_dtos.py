@@ -48,6 +48,7 @@ class ProductItemDTO(object):
     additional_payment_price = attr.ib(type=int)
     left_quantity = attr.ib(type=int)
     is_sold_out = attr.ib(type=bool)
+    total_payment_price = attr.ib(type=int)
 
     @classmethod
     def of(cls, product_item: ProductItem) -> 'ProductItemDTO':
@@ -58,6 +59,7 @@ class ProductItemDTO(object):
             good_number=product_item.good_number,
             left_quantity=product_item.left_quantity,
             is_sold_out=product_item.is_sold_out,
+            total_payment_price=product_item.product.payment_price + product_item.additional_payment_price,
         )
 
     def to_dict(self):

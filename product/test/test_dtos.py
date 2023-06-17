@@ -141,6 +141,7 @@ class TestProductItemDTO(TestCase):
         self.assertEqual(product_item['additional_payment_price'], self.product_item.additional_payment_price)
         self.assertEqual(product_item['left_quantity'], self.product_item.left_quantity)
         self.assertEqual(product_item['is_sold_out'], self.product_item.is_sold_out)
+        self.assertEqual(product_item['total_payment_price'], self.product_item.additional_payment_price + self.product.payment_price)
 
 
 class TestProductItemInfoDisplayInformationItemDTO(TestCase):
