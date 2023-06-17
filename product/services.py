@@ -81,7 +81,7 @@ def get_left_product_item_infos(product_id: int, info_type_id: int, product_item
     )
 
 
-def get_product_item_info_display_information(information: List[str], product_id: int) -> List[ProductItemInfoDisplayInformationItemDTO]:
+def get_product_item_info_display_information(information: List[str], product_id: int) -> List[dict]:
     information_by_values = defaultdict(lambda: {'additional_min_price': 0, 'additional_max_price': 0, 'is_sold_out': True})
 
     product_item_infos = ProductItemInfo.objects.select_related(
