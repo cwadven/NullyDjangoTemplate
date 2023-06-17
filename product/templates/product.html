@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="product-info-container">
+        <div id="product-title">{{ product.title }}</div>
+        <div class="product-info">
+            <div id="product-description">{{ product.description }}</div>
+            <div id="product-price">
+                <div id="product-real-price">{{ product.real_price }}</div>
+                <div id="product-payment-price">{{ product.payment_price }} 원</div>
+            </div>
+            <div id="product-bought-count">{{ product.bought_count }}</div>
+            <div id="product-review-count">{{ product.review_count }}</div>
+            <div id="product-review-rate">{{ product.review_rate }}</div>
+        </div>
+    </div>
+    <div class="product-payment">
+        <div class="user-payment-price"></div>
+    </div>
+
+    <div>구매하기</div>
+
+    {% for product_type_name in product.product_type_names %}
+        {{ product_type_name }}
+    {% endfor %}
+    {% for info_type in product.info_types %}
+        {{ info_type.info_type_id }}
+        {{ info_type.info_type__name }}
+    {% endfor %}
+    {% for image in product.product_images %}
+        {{ image }}
+    {% endfor %}
+</body>
+</html>
