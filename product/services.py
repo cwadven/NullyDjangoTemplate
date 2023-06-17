@@ -78,7 +78,7 @@ def get_left_product_item_infos(product_id: int, info_type_id: int, product_item
     )
 
 
-def apply_additional_prices(information: List[str], product_item_ids: List[int]):
+def apply_additional_prices(information: List[str], product_item_ids: List[int]) -> List[str]:
     information_by_additional_price = dict(
         ProductItemInfo.objects.filter(
             product_item_id__in=product_item_ids,
