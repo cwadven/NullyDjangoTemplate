@@ -1,7 +1,7 @@
 import attr
 from typing import List, Tuple
 
-from product.models import Product
+from product.models import Product, ProductItem
 
 
 @attr.s
@@ -33,6 +33,31 @@ class ProductDetailDTO(object):
             product_type_names=list(product.product_type.order_by('sequence').values_list('name', flat=True)),
             product_images=list(product.images.all().order_by('sequence').values_list('image', flat=True)),
             info_types=list(product.product_infos.order_by('sequence').values('info_type_id', 'info_type__name')),
+        )
+
+    def to_dict(self):
+        return attr.asdict(self, recurse=True)
+
+
+# Ajax 로 호출 하기
+@attr.s
+class ProductItemDTO(object):
+    id = attr.ib(type=int)
+    good_number = attr.ib(type=str)
+    title = attr.ib(type=str)
+    additional_payment_price = attr.ib(type=int)
+    left_quantity = attr.ib(type=int)
+    is_sold_out = attr.ib(type=bool)
+
+    @classmethod
+    def of(cls, product_item: ProductItem) -> 'ProductItemDTO':
+        return cls(
+            id=product_item.id,
+            title=product_item.title,
+            additional_payment_price=product_item.additional_payment_price,
+            good_number=product_item.good_number,
+            left_quantity=product_item.left_quantity,
+            is_sold_out=product_item.is_sold_out,
         )
 
     def to_dict(self):
