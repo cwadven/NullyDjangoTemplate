@@ -76,3 +76,21 @@ def get_left_product_item_infos(product_id: int, info_type_id: int, product_item
         information,
         product_item_ids,
     )
+
+
+def apply_additional_prices(information, product_item_ids):
+    information_by_additional_price = dict(
+        ProductItemInfo.objects.filter(
+            product_item_id__in=product_item_ids,
+        ).values_list(
+            'information',
+            'product_item__additional_payment_price',
+        )
+    )
+    for index, info in enumerate(information):
+        additional_price = information_by_additional_price.get(info, 0)
+        if additional_price > 0:
+            information[index] = f'{info} (+{additional_price})'
+        elif additional_price < 0:
+            information[index] = f'{info} ({additional_price})'
+    return information
